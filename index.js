@@ -82,7 +82,7 @@ app.get('/api/project/rid', async (req, res) => {
   let data = await db
     .db('mongo')
     .collection('project')
-    .find({ id: '10' }, { product_name: 1 })
+    .find({ id: '10' })
     .toArray();
   res.send(data);
 });
@@ -93,9 +93,14 @@ app.get('/api/project/pnpm', async (req, res) => {
     .db('mongo')
     .collection('project')
     .find(
-      { product_name: 'Intelligent Fresh Chips' },
+      {},
       {
         product_name: 1,
+        product_material: 1,
+        _id: 0,
+        id: 0,
+        product_price: 0,
+        product_color: 0,
       }
     )
     .toArray();
@@ -124,17 +129,6 @@ app.get('/api/project/pcpp', async (req, res) => {
   res.send(data);
 });
 
-// Delete the products which product price value are same
-app.get('/api/project/dpps', async (req, res) => {
-  db = await new mongodb.MongoClient(mongostring).connect();
-  let data = await db
-    .db('mongo')
-    .collection('project')
-    .find({ $or: [{ product_color: 'indigo' }, { product_price: 492 }] })
-    .toArray();
-  res.send(data);
-});
-
 app.get('/', async (req, res) => {
   res.send('connected');
 });
@@ -142,17 +136,3 @@ app.get('/', async (req, res) => {
 app.listen(5000, (req, res) => {
   console.log('server started at localhost:5000');
 });
-
-// const getDocument = async () => {
-//   try {
-//     const result = await project
-//       .find({
-//         product_price: { $gt: ['500'] },
-//       })
-//       .select({ name: 1 });
-//     console.log(result);
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
-// getDocument();
